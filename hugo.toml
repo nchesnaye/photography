@@ -1,6 +1,7 @@
-baseURL = 'https://example.org/'
+baseURL = "/" # Keep this simple in source config
 languageCode = 'en-us'
 title = 'Nick Chesnaye Photography'
-
+relativeURLs = true 
+uglyURLs = true     
 [params]
   description = "Amsterdam-based photographer available for events / weddings / portraits"
