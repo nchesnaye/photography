@@ -36,12 +36,14 @@ jobs:
         with:
           hugo-version: 'latest' # Uses the latest recommended Hugo version
 
+      - name: Setup Pages
+        id: pages # ADDED ID to reference its outputs
+        uses: actions/configure-pages@v5
+
       - name: Build Hugo Site
         # Builds the site and puts the result in the 'public' folder
-        run: hugo --minify
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+        # FIX: Added --baseURL using the output from the 'Setup Pages' step to ensure assets load correctly on a project page URL.
+        run: hugo --minify --baseURL ${{ steps.pages.outputs.base_url }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
