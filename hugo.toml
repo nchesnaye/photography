@@ -1,4 +1,4 @@
-baseURL = "/" # Keep this simple in source config
+baseURL = "https://nchesnaye.github.io/photography/" # Keep this simple in source config
 languageCode = 'en-us'
 title = 'Nick Chesnaye Photography'
 relativeURLs = true 
