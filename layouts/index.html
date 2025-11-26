@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .Site.Title }}</title>
-    <!-- Load Tailwind CSS CDN for utility classes -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- UPDATED: Switched from Montserrat to Comfortaa font for the title -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
     <style>
         /* Define the custom font for the title */
@@ -55,42 +53,31 @@
         }
     </style>
 </head>
-<!-- UPDATED: Changed body background to dark gray -->
 <body class="bg-gray-900 font-[Inter]">
 
-    <!-- UPDATED: Changed header background and shadow -->
     <header class="p-6 bg-gray-800 shadow-xl mb-6">
-        <!-- UPDATED: Changed title text color to white -->
         <h1 class="text-3xl font-bold text-white font-title">{{ .Site.Title }}</h1>
-        <!-- UPDATED: Changed description text color to light gray -->
         <p class="text-sm text-gray-400">{{ .Site.Params.description }}</p>
         
-        <!-- Contact Info Block was removed here -->
-    </header>
+        </header>
 
     <main class="container mx-auto p-4 md:p-8">
 
-        <!-- Hugo Logic to find the 'photos' content page and its images -->
         {{ $photosPage := .Site.GetPage "section" "photos" }}
 
         {{ if $photosPage }}
-            <!-- Get all image resources in the 'photos' folder -->
             {{ $images := $photosPage.Resources.ByType "image" }}
 
             {{ if $images }}
                 <div class="masonry-grid">
-                    <!-- Iterate over the images -->
-                    <!-- FIX: Removed .Reverse here as it causes an error in older Hugo versions -->
                     {{ range $images }}
                         {{ $img := . }}
-                        <!-- Use Hugo's image processing to create a resized, optimized image -->
                         {{ $resizedImage := $img.Resize "600x" }}
                         
                         <div class="masonry-item">
-                            <!-- Link the smaller image to the original, full-size image -->
-                            <a href="{{ $img.RelPermalink }}" target="_blank">
+                            <a href="{{ $img.Permalink }}" target="_blank">
                                 <img 
-                                    src="{{ $resizedImage.RelPermalink }}" 
+                                    src="{{ $resizedImage.Permalink }}"  <-- CHANGED TO .Permalink
                                     width="{{ $resizedImage.Width }}" 
                                     height="{{ $resizedImage.Height }}" 
                                     alt="{{ $img.Name }}" 
@@ -102,7 +89,6 @@
                     {{ end }}
                 </div>
             {{ else }}
-                <!-- UPDATED: Dark background and light text for 'No photos found' message -->
                 <div class="text-center p-12 bg-gray-700 rounded-lg shadow-lg">
                     <p class="text-xl text-gray-100 font-semibold">No photos found yet!</p>
                     <p class="text-gray-300 mt-2">Please add your images (JPG, PNG, etc.) to the `content/photos/` folder.</p>
