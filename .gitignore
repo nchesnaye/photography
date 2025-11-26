@@ -1,0 +1,10 @@
+/public/
+/resources/_gen/
+.hugo_build.lock
+
+# OS/System ignores
+.DS_Store
+Thumbs.db
+
+# Dependencies (if you add them later)
+/node_modules/

@@ -1,0 +1,6 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'Nick Chesnaye Photography'
+
+[params]
+  description = "Amsterdam-based photographer available for events / weddings / portraits"

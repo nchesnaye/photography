@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="{{ .Lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Site.Title }}</title>
+    <!-- Load Tailwind CSS CDN for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- UPDATED: Switched from Montserrat to Comfortaa font for the title -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Define the custom font for the title */
+        .font-title {
+            font-family: 'Comfortaa', sans-serif;
+            font-weight: 700; /* Bold weight, suitable for the round design of Comfortaa */
+            /* You can also use a Tailwind utility for weight like 'font-black' if you prefer */
+        }
+        
+        /* Define the Masonry Grid using CSS Columns */
+        .masonry-grid {
+            /* Desktop (4 columns) */
+            column-count: 4;
+            column-gap: 1rem; /* Gap between columns */
+        }
+        .masonry-item {
+            /* Makes images break only at column breaks, preventing slicing */
+            break-inside: avoid-column;
+            margin-bottom: 1rem;
+            width: 100%; /* Important: Takes up full column width */
+        }
+        .masonry-item img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 0.5rem; /* Rounded corners for aesthetic */
+            /* Images still use a soft shadow */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease-in-out;
+        }
+        .masonry-item img:hover {
+            transform: scale(1.02);
+            /* Slightly more prominent shadow on hover */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Responsive Breakpoints using standard CSS */
+        @media (max-width: 1024px) { /* Tablet/Small Desktop */
+            .masonry-grid { column-count: 3; }
+        }
+        @media (max-width: 768px) { /* Tablet */
+            .masonry-grid { column-count: 2; }
+        }
+        @media (max-width: 640px) { /* Mobile */
+            .masonry-grid { column-count: 1; column-gap: 0; }
+        }
+    </style>
+</head>
+<!-- UPDATED: Changed body background to dark gray -->
+<body class="bg-gray-900 font-[Inter]">
+
+    <!-- UPDATED: Changed header background and shadow -->
+    <header class="p-6 bg-gray-800 shadow-xl mb-6">
+        <!-- UPDATED: Changed title text color to white -->
+        <h1 class="text-3xl font-bold text-white font-title">{{ .Site.Title }}</h1>
+        <!-- UPDATED: Changed description text color to light gray -->
+        <p class="text-sm text-gray-400">{{ .Site.Params.description }}</p>
+        
+        <!-- Contact Info Block was removed here -->
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <!-- Hugo Logic to find the 'photos' content page and its images -->
+        {{ $photosPage := .Site.GetPage "section" "photos" }}
+
+        {{ if $photosPage }}
+            <!-- Get all image resources in the 'photos' folder -->
+            {{ $images := $photosPage.Resources.ByType "image" }}
+
+            {{ if $images }}
+                <div class="masonry-grid">
+                    <!-- Iterate over the images -->
+                    <!-- FIX: Removed .Reverse here as it causes an error in older Hugo versions -->
+                    {{ range $images }}
+                        {{ $img := . }}
+                        <!-- Use Hugo's image processing to create a resized, optimized image -->
+                        {{ $resizedImage := $img.Resize "600x" }}
+                        
+                        <div class="masonry-item">
+                            <!-- Link the smaller image to the original, full-size image -->
+                            <a href="{{ $img.RelPermalink }}" target="_blank">
+                                <img 
+                                    src="{{ $resizedImage.RelPermalink }}" 
+                                    width="{{ $resizedImage.Width }}" 
+                                    height="{{ $resizedImage.Height }}" 
+                                    alt="{{ $img.Name }}" 
+                                    loading="lazy"
+                                />
+                            </a>
+                        </div>
+
+                    {{ end }}
+                </div>
+            {{ else }}
+                <!-- UPDATED: Dark background and light text for 'No photos found' message -->
+                <div class="text-center p-12 bg-gray-700 rounded-lg shadow-lg">
+                    <p class="text-xl text-gray-100 font-semibold">No photos found yet!</p>
+                    <p class="text-gray-300 mt-2">Please add your images (JPG, PNG, etc.) to the `content/photos/` folder.</p>
+                </div>
+            {{ end }}
+        {{ else }}
+            <div class="text-center p-12 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-lg shadow-lg">
+                <p class="font-bold">Setup Error</p>
+                <p>Could not find the Page Bundle for photos. Make sure you have a file at `content/photos/_index.md`.</p>
+            </div>
+        {{ end }}
+
+    </main>
+</body>
+</html>
