@@ -1,4 +1,4 @@
-baseURL = "nickchesnaye.nl" # Keep this simple in source config
+baseURL = "/" # Keep this simple in source config
 languageCode = 'en-us'
 title = 'Nick Chesnaye Photography'
 relativeURLs = true 
